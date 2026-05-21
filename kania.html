@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Preview</title>
+  <style>
+    /* Styling dasar untuk layout */
+    body {
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .product-showcase {
+      max-width: 1000px;
+      margin: 50px auto;
+      text-align: center;
+      font-family: sans-serif;
+    }
+
+    /* Container untuk menderetkan gambar */
+    .product-list {
+      display: flex;
+      justify-content: center;
+      align-items: center; /* Memastikan semua gambar rata tengah */
+      gap: 30px; /* Jarak antar gambar */
+      padding: 20px;
+    }
+
+    /* Styling untuk setiap item produk */
+    .product-item {
+      cursor: pointer;
+      /* Transisi halus saat gambar diblur, difokuskan, atau diperbesar */
+      transition: filter 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .product-item img {
+      display: block;
+      width: 150px; /* Sesuaikan ukuran gambar produk kamu */
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* --- LOGIKA BLUR & FOKUS --- */
+    
+    /* Efek untuk produk yang TIDAK dipilih (blur) */
+    .product-item.blurred {
+      filter: blur(5px);
+      opacity: 0.6;
+      transform: scale(0.9); /* Sedikit mengecil agar tidak terlalu menonjol */
+    }
+
+    /* Efek untuk produk yang SEDANG dipilih (fokus) */
+    .product-item.active {
+      filter: blur(0);
+      opacity: 1;
+      transform: scale(1.15); /* Membesar agar terlihat paling menonjol */
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="product-showcase">
+    <div class="product-list" id="product-list">
+      <div class="product-item active">
+        <img src="1.jpeg" alt="Produk 1">
+      </div>
+      
+      <div class="product-item blurred">
+        <img src="2.jpeg" alt="Produk 2">
+      </div>
+      <div class="product-item blurred">
+        <img src="3.jpg" alt="Produk 3">
+      </div>
+      <div class="product-item blurred">
+        <img src="4.jpg" alt="Produk 4">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Ambil semua elemen gambar produk
+      const products = document.querySelectorAll('.product-item');
+
+      products.forEach(product => {
+        product.addEventListener('click', function() {
+          // Looping lagi ke semua produk untuk mengatur class-nya
+          products.forEach(item => {
+            if (item === this) {
+              // Jika ini adalah item yang sedang diklik: hapus blur, jadikan active
+              item.classList.add('active');
+              item.classList.remove('blurred');
+            } else {
+              // Jika ini item lain: hapus active, jadikan blur
+              item.classList.remove('active');
+              item.classList.add('blurred');
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KANTUL TOKO</title>
+  <style>
+    /* Styling dasar */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1700px;
+      margin: 40px auto;
+      border: 2px solid #000;
+      border-radius: 20px;
+      padding-bottom: 20px;
+      background-color: #fff;
+    }
+
+    /* --- BAGIAN ATAS: PREVIEW MODEL BESAR --- */
+    .preview-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      min-height: 400px;
+      padding: 40px 20px;
+    }
+
+    .preview-img {
+      height: 350px;
+      object-fit: contain;
+      transition: all 0.5s ease;
+    }
+
+    /* Efek Blur & Fokus untuk Gambar Atas */
+    .preview-img.blurred {
+      filter: blur(6px);
+      transform: scale(0.85);
+      opacity: 0.7;
+    }
+    .preview-img.active {
+      filter: blur(0);
+      transform: scale(1.1);
+      opacity: 1;
+      z-index: 10;
+    }
+
+    /* --- BAGIAN BAWAH: THUMBNAIL / TOMBOL PRODUK --- */
+    .thumbnail-area {
+      display: flex;
+      justify-content: center;
+      background-color: #f0f0f0; /* Warna background abu-abu/gelap untuk efek redup */
+      border-top: 1px solid #ddd;
+    }
+
+    .thumb-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 20%; /* Membagi rata 5 produk */
+      padding: 15px;
+      cursor: pointer;
+      background-color: #f0f0f0; /* Default redup */
+      border-right: 1px solid #ddd;
+      transition: all 0.4s ease;
+    }
+    .thumb-card:last-child {
+      border-right: none;
+    }
+
+    .thumb-card img {
+        width: 100%;
+        height: auto; /* Membiarkan tinggi menyesuaikan proporsi asli gambar */
+        max-height: 200px; /* Batas maksimal tinggi agar tidak terlalu panjang ke bawah */
+        object-fit: contain; /* Memastikan seluruh bagian gambar masuk ke dalam kotak tanpa terpotong */
+        margin-bottom: 10px;
+        }
+
+    .thumb-info {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* Efek Blur & Fokus untuk Kartu Bawah */
+    .thumb-card.blurred {
+      filter: blur(3px) brightness(0.8);
+    }
+    .thumb-card.active {
+      filter: blur(0) brightness(1);
+      background-color: #ffffff; /* Background putih untuk item aktif */
+      transform: scale(1.05); /* Sedikit membesar agar menonjol */
+      z-index: 5;
+      box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <div class="preview-area" id="preview-area">
+      <img src="b1.png" class="preview-img blurred" data-index="0" alt="Model 1">
+      <img src="b2.png" class="preview-img blurred" data-index="1" alt="Model 2">
+      <img src="b3.png" class="preview-img active" data-index="2" alt="Model 3">
+      <img src="b4.png" class="preview-img blurred" data-index="3" alt="Model 4">
+      <img src="b5.png" class="preview-img blurred" data-index="4" alt="Model 5">
+    </div>
+
+    <div class="thumbnail-area" id="thumbnail-area">
+      <div class="thumb-card blurred" data-index="0">
+        <img src="1.jpeg" alt="Thumb 1">
+        <div class="thumb-info"><span>Badak Amazon</span><span>Rp.120.000</span></div>
+      </div>
+      
+      <div class="thumb-card blurred" data-index="1">
+        <img src="2.jpeg" alt="Thumb 2">
+        <div class="thumb-info"><span>Badak Africa</span><span>Rp.150.000</span></div>
+      </div>
+
+      <div class="thumb-card active" data-index="2"> <img src="3.jpg" alt="Thumb 3">
+        <div class="thumb-info"><span>Badak Asia</span><span>Rp.200.000</span></div>
+      </div>
+
+      <div class="thumb-card blurred" data-index="3">
+        <img src="4.jpg" alt="Thumb 4">
+        <div class="thumb-info"><span>Badak Sumatera</span><span>Rp.260.000</span></div>
+      </div>
+
+      <div class="thumb-card blurred" data-index="4">
+        <img src="5.jpg" alt="Thumb 5">
+        <div class="thumb-info"><span>Badak Jawa</span><span>Rp.300.000</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const thumbCards = document.querySelectorAll('.thumb-card');
+      const previewImgs = document.querySelectorAll('.preview-img');
+
+      thumbCards.forEach(card => {
+        card.addEventListener('click', function() {
+          // Ambil index dari kartu yang diklik
+          const clickedIndex = this.getAttribute('data-index');
+
+          // 1. Update status pada Thumbnail Bawah
+          thumbCards.forEach(c => {
+            if (c.getAttribute('data-index') === clickedIndex) {
+              c.classList.add('active');
+              c.classList.remove('blurred');
+            } else {
+              c.classList.remove('active');
+              c.classList.add('blurred');
+            }
+          });
+
+          // 2. Update status pada Preview Atas yang sesuai dengan index
+          previewImgs.forEach(img => {
+            if (img.getAttribute('data-index') === clickedIndex) {
+              img.classList.add('active');
+              img.classList.remove('blurred');
+            } else {
+              img.classList.remove('active');
+              img.classList.add('blurred');
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
